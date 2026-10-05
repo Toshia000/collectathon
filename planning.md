@@ -21,6 +21,7 @@ A place to write your findings and plans
 - Increase the speed of the player by changing speed variable
 - Changed background color to blue
 - Create new variables for player and treasure starting positions
+- When enter key /start button is pressed, player/treasure positions reset and score is set to 0
 ## Brainstorming game ideas
 
 ## Plan for implementing game

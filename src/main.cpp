@@ -60,6 +60,14 @@ int main()
 
     while (true)
     {
+
+        if (bn::keypad::start_pressed()) {
+            player.set_position(INITIAL_PLAYER_X, INITIAL_PLAYER_Y);
+            treasure.set_position(INITIAL_TREASURE_X, INITIAL_TREASURE_Y);
+            score = 0;
+        }
+
+
         // Move player with d-pad
         if (bn::keypad::left_held())
         {

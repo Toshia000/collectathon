@@ -18,7 +18,7 @@ A place to write your findings and plans
 - Seed for the random function is updated, so the treasure does not move to same sequence of positions
 
 ## Planning required changes
-
+- Increase the speed of the player by changing speed variable
 ## Brainstorming game ideas
 
 ## Plan for implementing game

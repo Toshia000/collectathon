@@ -20,6 +20,7 @@ A place to write your findings and plans
 ## Planning required changes
 - Increase the speed of the player by changing speed variable
 - Changed background color to blue
+- Create new variables for player and treasure starting positions
 ## Brainstorming game ideas
 
 ## Plan for implementing game

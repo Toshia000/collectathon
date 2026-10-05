@@ -23,6 +23,7 @@ A place to write your findings and plans
 - Create new variables for player and treasure starting positions
 - When enter key /start button is pressed, player/treasure positions reset and score is set to 0
 - Player should apper on the opposite side of the screen when he is out of bounds of the screen, 
+- Made a 3 second speed boost when the player presses the A button (X key)
 ## Brainstorming game ideas
 
 ## Plan for implementing game

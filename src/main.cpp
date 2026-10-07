@@ -16,9 +16,6 @@
 
 // Pixels / Frame player moves at
 static constexpr bn::fixed SPEED = 1.5;
-bn::fixed speed_boost = 0;
-int boosts_left = 3;
-int boost_timer = 0;
 
 // Width and height of the the player and treasure bounding boxes
 static constexpr bn::size PLAYER_SIZE = {8, 8};
@@ -57,6 +54,10 @@ int main()
     bn::sprite_text_generator text_generator(common::fixed_8x16_sprite_font);
 
     int score = 0;
+
+    bn::fixed speed_boost = 0;
+    int boosts_left = 3;
+    int boost_timer = 0;
 
     bn::sprite_ptr player = bn::sprite_items::square.create_sprite(INITIAL_PLAYER_X, INITIAL_PLAYER_Y);
     bn::sprite_ptr treasure = bn::sprite_items::dot.create_sprite(INITIAL_TREASURE_X, INITIAL_TREASURE_Y);

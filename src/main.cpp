@@ -16,9 +16,9 @@
 
 // Pixels / Frame player moves at
 static constexpr bn::fixed SPEED = 1.5;
-bn::fixed BOOST_SPEED = 0;
-int BOOSTS_LEFT = 3;
-int BOOST_TIMER = 0;
+bn::fixed speed_boost = 0;
+int boosts_left = 3;
+int boost_timer = 0;
 
 // Width and height of the the player and treasure bounding boxes
 static constexpr bn::size PLAYER_SIZE = {8, 8};
@@ -68,38 +68,38 @@ int main()
             player.set_position(INITIAL_PLAYER_X, INITIAL_PLAYER_Y);
             treasure.set_position(INITIAL_TREASURE_X, INITIAL_TREASURE_Y);
             score = 0;
-            BOOSTS_LEFT = 3;
+            boosts_left = 3;
         }
 
-        if (bn::keypad::a_pressed() && BOOSTS_LEFT > 0 && BOOST_TIMER == 0) {
-            BOOST_TIMER = 180;
-            BOOSTS_LEFT--;
-            BOOST_SPEED = 3;
+        if (bn::keypad::a_pressed() && boosts_left > 0 && boost_timer == 0) {
+            boost_timer = 180;
+            boosts_left--;
+            speed_boost = 3;
         }
 
-        if (BOOST_TIMER > 0) {
-            BOOST_TIMER--;
+        if (boost_timer > 0) {
+            boost_timer--;
         }
-        else if (BOOST_TIMER == 0) {
-            BOOST_SPEED = 0;
+        else if (boost_timer == 0) {
+            speed_boost = 0;
         }
 
         // Move player with d-pad
         if (bn::keypad::left_held())
         {
-            player.set_x(player.x() - SPEED - BOOST_SPEED);
+            player.set_x(player.x() - SPEED - speed_boost);
         }
         if (bn::keypad::right_held())
         {
-            player.set_x(player.x() + SPEED + BOOST_SPEED);
+            player.set_x(player.x() + SPEED + speed_boost);
         }
         if (bn::keypad::up_held())
         {
-            player.set_y(player.y() - SPEED - BOOST_SPEED);
+            player.set_y(player.y() - SPEED - speed_boost);
         }
         if (bn::keypad::down_held())
         {
-            player.set_y(player.y() + SPEED + BOOST_SPEED);
+            player.set_y(player.y() + SPEED + speed_boost);
         }
 
         // Move player to opposite side of the screen when the player is out of bounds

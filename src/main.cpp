@@ -9,6 +9,8 @@
 #include <bn_size.h>
 #include <bn_string.h>
 #include <bn_backdrop.h>
+#include <bn_timer.h>
+#include <bn_timers.h>
 
 #include "bn_sprite_items_dot.h"
 #include "bn_sprite_items_square.h"
@@ -16,6 +18,9 @@
 
 // Pixels / Frame player moves at
 static constexpr bn::fixed SPEED = 1.5;
+
+// Duration for the boost
+static constexpr int BOOST_TIME = 3;
 
 // Width and height of the the player and treasure bounding boxes
 static constexpr bn::size PLAYER_SIZE = {8, 8};
@@ -33,6 +38,9 @@ static constexpr int MAX_SCORE_CHARS = 11;
 // Number of character required to show "boosts: " text and remaining boosts number (Boosts: 3)
 static constexpr int MAX_BOOST_CHARS = 9;
 
+// Number of character required to show "timer: " text and countdown in seconds (Timer: 3)
+static constexpr int MAX_TIMER_CHARS = 8;
+
 // Score location
 static constexpr int SCORE_X = 70;
 static constexpr int SCORE_Y = -70;
@@ -40,6 +48,10 @@ static constexpr int SCORE_Y = -70;
 // Boost location
 static constexpr int BOOST_X = -100;
 static constexpr int BOOST_Y = -70;
+
+// Timer location
+static constexpr int TIMER_X = -20;
+static constexpr int TIMER_Y = -70;
 
 // Initial player location
 static constexpr int INITIAL_PLAYER_X = 0;
@@ -62,7 +74,12 @@ int main()
     // Will hold the sprites for the boost
     bn::vector<bn::sprite_ptr, MAX_BOOST_CHARS> boost_sprites = {};
 
+    // Will hold the sprites for the timer
+    bn::vector<bn::sprite_ptr, MAX_TIMER_CHARS> timer_sprites = {};
+
     bn::string<MAX_BOOST_CHARS> boosts_text = "Boosts: ";
+
+    bn::string<MAX_TIMER_CHARS> timer_text = "Timer: ";
 
     bn::sprite_text_generator text_generator(common::fixed_8x16_sprite_font);
 
@@ -70,7 +87,10 @@ int main()
 
     bn::fixed speed_boost = 0;
     int boosts_left = 3;
-    int boost_timer = 0;
+    int elapsed_seconds = 0;
+    bool boost = false;
+
+    bn::timer timer;
 
     bn::sprite_ptr player = bn::sprite_items::square.create_sprite(INITIAL_PLAYER_X, INITIAL_PLAYER_Y);
     bn::sprite_ptr treasure = bn::sprite_items::dot.create_sprite(INITIAL_TREASURE_X, INITIAL_TREASURE_Y);
@@ -86,20 +106,24 @@ int main()
             boosts_left = 3;
         }
 
-        if (bn::keypad::a_pressed() && boosts_left > 0 && boost_timer == 0)
+        if (bn::keypad::a_pressed() && boosts_left > 0 && !boost)
         {
-            boost_timer = 180;
+            boost = true;
             boosts_left--;
             speed_boost = 3;
+            timer.restart();
         }
 
-        if (boost_timer > 0)
+        if (boost)
         {
-            boost_timer--;
+            elapsed_seconds = timer.elapsed_ticks() / bn::timers::ticks_per_second();
         }
-        else if (boost_timer == 0)
+
+        if (elapsed_seconds >= BOOST_TIME)
         {
             speed_boost = 0;
+            boost = false;
+            elapsed_seconds = 0;
         }
 
         // Move player with d-pad
@@ -172,6 +196,13 @@ int main()
         text_generator.generate(BOOST_X, BOOST_Y,
                                 boost_string,
                                 boost_sprites);
+
+        // Update timer display
+        bn::string<MAX_TIMER_CHARS> timer_string = timer_text + bn::to_string<MAX_TIMER_CHARS>(BOOST_TIME - elapsed_seconds);
+        timer_sprites.clear();
+        text_generator.generate(TIMER_X, TIMER_Y,
+                                timer_string,
+                                timer_sprites);
 
         // Update RNG seed every frame so we don't get the same sequence of positions every time
         rng.update();

@@ -30,9 +30,16 @@ static constexpr int MAX_X = bn::display::width() / 2;
 // Number of characters required to show the longest numer possible in an int (-2147483647)
 static constexpr int MAX_SCORE_CHARS = 11;
 
+// Number of character required to show "boosts: " text and remaining boosts number (Boosts: 3)
+static constexpr int MAX_BOOST_CHARS = 9;
+
 // Score location
 static constexpr int SCORE_X = 70;
 static constexpr int SCORE_Y = -70;
+
+// Boost location
+static constexpr int BOOST_X = -100;
+static constexpr int BOOST_Y = -70;
 
 // Initial player location
 static constexpr int INITIAL_PLAYER_X = 0;
@@ -51,10 +58,16 @@ int main()
 
     // Will hold the sprites for the score
     bn::vector<bn::sprite_ptr, MAX_SCORE_CHARS> score_sprites = {};
+
+    // Will hold the sprites for the boost
+    bn::vector<bn::sprite_ptr, MAX_BOOST_CHARS> boost_sprites = {};
+
+    bn::string<MAX_BOOST_CHARS> boosts_text = "Boosts: ";
+    
     bn::sprite_text_generator text_generator(common::fixed_8x16_sprite_font);
-
+    
     int score = 0;
-
+    
     bn::fixed speed_boost = 0;
     int boosts_left = 3;
     int boost_timer = 0;
@@ -144,6 +157,13 @@ int main()
         text_generator.generate(SCORE_X, SCORE_Y,
                                 score_string,
                                 score_sprites);
+
+        // Update boost display
+        bn::string<MAX_BOOST_CHARS> boost_string = boosts_text + bn::to_string<MAX_BOOST_CHARS>(boosts_left);
+        boost_sprites.clear();
+        text_generator.generate(BOOST_X, BOOST_Y,
+                                boost_string,
+                                boost_sprites);
 
         // Update RNG seed every frame so we don't get the same sequence of positions every time
         rng.update();

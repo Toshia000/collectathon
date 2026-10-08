@@ -15,6 +15,7 @@
 #include "bn_sprite_items_dot.h"
 #include "bn_sprite_items_square.h"
 #include "common_fixed_8x16_font.h"
+#include <bn_sprite_palette_ptr.h>
 
 // Pixels / Frame player moves at
 static constexpr bn::fixed SPEED = 1.5;
@@ -34,6 +35,11 @@ static constexpr int MIN_Y = -bn::display::height() / 2;
 static constexpr int MAX_Y = bn::display::height() / 2;
 static constexpr int MIN_X = -bn::display::width() / 2;
 static constexpr int MAX_X = bn::display::width() / 2;
+
+// Boost timer location and maximum characters
+static constexpr int MAX_BOOST_TIME_CHARS = 14;
+static constexpr int BOOST_TIME_X = -100;
+static constexpr int BOOST_TIME_Y = -55;
 
 // Number of characters required to show the longest numer possible in an int (-2147483647)
 static constexpr int MAX_SCORE_CHARS = 11;
@@ -63,6 +69,9 @@ static constexpr int INITIAL_PLAYER_Y = 0;
 // Initial treasure location
 static constexpr int INITIAL_TREASURE_X = 100;
 static constexpr int INITIAL_TREASURE_Y = 0;
+
+// Change player color every 30 frames
+static constexpr int COLOR_CHANGE_FRAMES = 30;
 
 int main()
 {
@@ -95,11 +104,46 @@ int main()
 
     bn::timer timer;
 
+    int color_timer = 0;
+    int current_color = 0;
+
     bn::sprite_ptr player = bn::sprite_items::square.create_sprite(INITIAL_PLAYER_X, INITIAL_PLAYER_Y);
     bn::sprite_ptr treasure = bn::sprite_items::dot.create_sprite(INITIAL_TREASURE_X, INITIAL_TREASURE_Y);
 
+    bn::sprite_palette_ptr player_palette = player.palette(); // For alternating colors
+    player_palette.set_color(9, bn::color(0, 31, 0));         // Player will start green
+
     while (true)
     {
+        color_timer++;
+
+        if (color_timer >= COLOR_CHANGE_FRAMES)
+        {
+            color_timer = 0;
+            current_color++;
+
+            if (current_color > 3)
+            {
+                current_color = 0;
+            }
+
+            if (current_color == 0)
+            {
+                player_palette.set_color(9, bn::color(0, 31, 0)); // Green
+            }
+            else if (current_color == 1)
+            {
+                player_palette.set_color(9, bn::color(31, 31, 31)); // White
+            }
+            else if (current_color == 2)
+            {
+                player_palette.set_color(9, bn::color(31, 31, 0)); // Yellow
+            }
+            else if (current_color == 3)
+            {
+                player_palette.set_color(9, bn::color(31, 0, 0)); // Red
+            }
+        }
 
         if (bn::keypad::start_pressed())
         {

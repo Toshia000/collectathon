@@ -39,11 +39,6 @@ static constexpr int MAX_Y = bn::display::height() / 2;
 static constexpr int MIN_X = -bn::display::width() / 2;
 static constexpr int MAX_X = bn::display::width() / 2;
 
-// Boost timer location and maximum characters
-static constexpr int MAX_BOOST_TIME_CHARS = 14;
-static constexpr int BOOST_TIME_X = -100;
-static constexpr int BOOST_TIME_Y = -55;
-
 // Number of characters required to show the longest numer possible in an int (-2147483647)
 static constexpr int MAX_SCORE_CHARS = 11;
 

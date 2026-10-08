@@ -19,6 +19,9 @@
 // Pixels / Frame player moves at
 static constexpr bn::fixed SPEED = 1.5;
 
+// Number of boosts
+static constexpr int BOOST_COUNT = 3;
+
 // Duration for the boost
 static constexpr int BOOST_TIME = 3;
 
@@ -86,7 +89,7 @@ int main()
     int score = 0;
 
     bn::fixed speed_boost = 0;
-    int boosts_left = 3;
+    int boosts_left = BOOST_COUNT;
     int elapsed_seconds = 0;
     bool boost = false;
 
@@ -103,7 +106,7 @@ int main()
             player.set_position(INITIAL_PLAYER_X, INITIAL_PLAYER_Y);
             treasure.set_position(INITIAL_TREASURE_X, INITIAL_TREASURE_Y);
             score = 0;
-            boosts_left = 3;
+            boosts_left = BOOST_COUNT;
         }
 
         if (bn::keypad::a_pressed() && boosts_left > 0 && !boost)

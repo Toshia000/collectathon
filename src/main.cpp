@@ -27,6 +27,11 @@ static constexpr int MAX_Y = bn::display::height() / 2;
 static constexpr int MIN_X = -bn::display::width() / 2;
 static constexpr int MAX_X = bn::display::width() / 2;
 
+// Boost timer location and maximum characters
+static constexpr int MAX_BOOST_TIME_CHARS = 14;
+static constexpr int BOOST_TIME_X = -100;
+static constexpr int BOOST_TIME_Y = -55;
+
 // Number of characters required to show the longest numer possible in an int (-2147483647)
 static constexpr int MAX_SCORE_CHARS = 11;
 
@@ -62,6 +67,10 @@ int main()
     // Will hold the sprites for the boost
     bn::vector<bn::sprite_ptr, MAX_BOOST_CHARS> boost_sprites = {};
 
+    // Will hold the sprites for the boost timer
+    bn::vector<bn::sprite_ptr, MAX_BOOST_TIME_CHARS> boost_time_sprites = {};
+    bn::string<MAX_BOOST_TIME_CHARS> boost_time_text = "Boost Time: ";
+
     bn::string<MAX_BOOST_CHARS> boosts_text = "Boosts: ";
 
     bn::sprite_text_generator text_generator(common::fixed_8x16_sprite_font);
@@ -84,6 +93,8 @@ int main()
             treasure.set_position(INITIAL_TREASURE_X, INITIAL_TREASURE_Y);
             score = 0;
             boosts_left = 3;
+            boost_timer = 0;
+            speed_boost = 0;
         }
 
         if (bn::keypad::a_pressed() && boosts_left > 0 && boost_timer == 0)
@@ -172,6 +183,18 @@ int main()
         text_generator.generate(BOOST_X, BOOST_Y,
                                 boost_string,
                                 boost_sprites);
+        
+        // Convert boost timer to seconds
+        int boost_seconds = (boost_timer + 59) / 60;
+
+        // Update boost timer display
+        bn::string<MAX_BOOST_TIME_CHARS> boost_time_string =
+        boost_time_text + bn::to_string<MAX_BOOST_TIME_CHARS>(boost_seconds);
+
+        boost_time_sprites.clear();
+
+        text_generator.generate(BOOST_TIME_X, BOOST_TIME_Y, boost_time_string, boost_time_sprites);
+
 
         // Update RNG seed every frame so we don't get the same sequence of positions every time
         rng.update();

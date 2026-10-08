@@ -25,8 +25,8 @@ A place to write your findings and plans
 - Player should apper on the opposite side of the screen when he is out of bounds of the screen, 
 - Made a 3 second speed boost when the player presses the A button (X key)
 ## Brainstorming game ideas
-- Add a boosts count on the screen
-- Add a boost timer with remaining boost time
+- Add a boosts count on the screen ✅
+- Add a boost timer with remaining boost time 
 - When the player is partially out of bounds, second part should apper on the opposite side
 - Alternate player colors randomly
 - Add obstacles

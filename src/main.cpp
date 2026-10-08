@@ -13,6 +13,7 @@
 #include "bn_sprite_items_dot.h"
 #include "bn_sprite_items_square.h"
 #include "common_fixed_8x16_font.h"
+#include <bn_sprite_palette_ptr.h>
 
 // Pixels / Frame player moves at
 static constexpr bn::fixed SPEED = 1.5;
@@ -54,6 +55,9 @@ static constexpr int INITIAL_PLAYER_Y = 0;
 static constexpr int INITIAL_TREASURE_X = 100;
 static constexpr int INITIAL_TREASURE_Y = 0;
 
+// Change player color every 30 frames
+static constexpr int COLOR_CHANGE_FRAMES = 30;
+
 int main()
 {
     bn::core::init();
@@ -81,11 +85,46 @@ int main()
     int boosts_left = 3;
     int boost_timer = 0;
 
+    int color_timer = 0;
+    int current_color = 0;
+
     bn::sprite_ptr player = bn::sprite_items::square.create_sprite(INITIAL_PLAYER_X, INITIAL_PLAYER_Y);
     bn::sprite_ptr treasure = bn::sprite_items::dot.create_sprite(INITIAL_TREASURE_X, INITIAL_TREASURE_Y);
 
+    bn::sprite_palette_ptr player_palette = player.palette(); // For alternating colors
+    player_palette.set_color(9, bn::color(0, 31, 0));         // Player will start green
+
     while (true)
     {
+        color_timer++;
+
+        if (color_timer >= COLOR_CHANGE_FRAMES)
+        {
+            color_timer = 0;
+            current_color++;
+
+            if (current_color > 3)
+            {
+                current_color = 0;
+            }
+
+            if (current_color == 0)
+            {
+                player_palette.set_color(9, bn::color(0, 31, 0)); // Green
+            }
+            else if (current_color == 1)
+            {
+                player_palette.set_color(9, bn::color(31, 31, 31)); // White
+            }
+            else if (current_color == 2)
+            {
+                player_palette.set_color(9, bn::color(31, 31, 0)); // Yellow
+            }
+            else if (current_color == 3)
+            {
+                player_palette.set_color(9, bn::color(31, 0, 0)); // Red
+            }
+        }
 
         if (bn::keypad::start_pressed())
         {
@@ -183,18 +222,17 @@ int main()
         text_generator.generate(BOOST_X, BOOST_Y,
                                 boost_string,
                                 boost_sprites);
-        
+
         // Convert boost timer to seconds
         int boost_seconds = (boost_timer + 59) / 60;
 
         // Update boost timer display
         bn::string<MAX_BOOST_TIME_CHARS> boost_time_string =
-        boost_time_text + bn::to_string<MAX_BOOST_TIME_CHARS>(boost_seconds);
+            boost_time_text + bn::to_string<MAX_BOOST_TIME_CHARS>(boost_seconds);
 
         boost_time_sprites.clear();
 
         text_generator.generate(BOOST_TIME_X, BOOST_TIME_Y, boost_time_string, boost_time_sprites);
-
 
         // Update RNG seed every frame so we don't get the same sequence of positions every time
         rng.update();

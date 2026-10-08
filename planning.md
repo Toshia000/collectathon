@@ -26,9 +26,9 @@ A place to write your findings and plans
 - Made a 3 second speed boost when the player presses the A button (X key)
 ## Brainstorming game ideas
 - Add a boosts count on the screen ✅
-- Add a boost timer with remaining boost time 
+- Add a boost timer with remaining boost time ✅
+- Alternate player colors randomly ✅
 - When the player is partially out of bounds, second part should apper on the opposite side
-- Alternate player colors randomly
 - Add obstacles
 - Add more treasures or treasure types
 ## Plan for implementing game

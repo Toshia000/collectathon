@@ -20,6 +20,9 @@
 // Pixels / Frame player moves at
 static constexpr bn::fixed SPEED = 1.5;
 
+// Amount of speed boost on top of base speed
+static constexpr bn::fixed SPEED_BOOST = 3;
+
 // Number of boosts
 static constexpr int BOOST_COUNT = 3;
 
@@ -157,7 +160,7 @@ int main()
         {
             boost = true;
             boosts_left--;
-            speed_boost = 3;
+            speed_boost = SPEED_BOOST;
             timer.restart();
         }
 

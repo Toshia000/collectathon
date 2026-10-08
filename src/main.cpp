@@ -63,11 +63,11 @@ int main()
     bn::vector<bn::sprite_ptr, MAX_BOOST_CHARS> boost_sprites = {};
 
     bn::string<MAX_BOOST_CHARS> boosts_text = "Boosts: ";
-    
+
     bn::sprite_text_generator text_generator(common::fixed_8x16_sprite_font);
-    
+
     int score = 0;
-    
+
     bn::fixed speed_boost = 0;
     int boosts_left = 3;
     int boost_timer = 0;
@@ -78,23 +78,27 @@ int main()
     while (true)
     {
 
-        if (bn::keypad::start_pressed()) {
+        if (bn::keypad::start_pressed())
+        {
             player.set_position(INITIAL_PLAYER_X, INITIAL_PLAYER_Y);
             treasure.set_position(INITIAL_TREASURE_X, INITIAL_TREASURE_Y);
             score = 0;
             boosts_left = 3;
         }
 
-        if (bn::keypad::a_pressed() && boosts_left > 0 && boost_timer == 0) {
+        if (bn::keypad::a_pressed() && boosts_left > 0 && boost_timer == 0)
+        {
             boost_timer = 180;
             boosts_left--;
             speed_boost = 3;
         }
 
-        if (boost_timer > 0) {
+        if (boost_timer > 0)
+        {
             boost_timer--;
         }
-        else if (boost_timer == 0) {
+        else if (boost_timer == 0)
+        {
             speed_boost = 0;
         }
 
@@ -117,16 +121,20 @@ int main()
         }
 
         // Move player to opposite side of the screen when the player is out of bounds
-        if (player.x() > MAX_X) {
+        if (player.x() > MAX_X)
+        {
             player.set_x(MIN_X);
         }
-        if (player.x() < MIN_X) {
+        if (player.x() < MIN_X)
+        {
             player.set_x(MAX_X);
         }
-        if (player.y() > MAX_Y) {
+        if (player.y() > MAX_Y)
+        {
             player.set_y(MIN_Y);
         }
-        if (player.y() < MIN_Y) {
+        if (player.y() < MIN_Y)
+        {
             player.set_y(MAX_Y);
         }
 

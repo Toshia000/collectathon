@@ -176,6 +176,16 @@ int main()
             elapsed_seconds = 0;
         }
 
+        // Change background color when boost is active
+        if (boost)
+        {
+            bn::backdrop::set_color(bn::color(20, 0, 25)); // Purple when boost is active
+        }
+        else
+        {
+            bn::backdrop::set_color(bn::color(0, 0, 31)); // Blue (default)
+        }
+
         // Move smiley with d-pad
         if (bn::keypad::left_held())
         {

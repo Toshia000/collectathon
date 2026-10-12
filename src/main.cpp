@@ -151,6 +151,9 @@ int main()
             treasure.set_position(INITIAL_TREASURE_X, INITIAL_TREASURE_Y);
             score = 0;
             boosts_left = BOOST_COUNT;
+            boost = false;
+            speed_boost = 0;
+            elapsed_seconds = 0;
         }
 
         if (bn::keypad::a_pressed() && boosts_left > 0 && !boost)
@@ -245,11 +248,13 @@ int main()
                                 boost_sprites);
 
         // Update timer display
-        bn::string<MAX_TIMER_CHARS> timer_string = timer_text + bn::to_string<MAX_TIMER_CHARS>(BOOST_TIME - elapsed_seconds);
         timer_sprites.clear();
-        text_generator.generate(TIMER_X, TIMER_Y,
-                                timer_string,
-                                timer_sprites);
+
+        if (boost)
+        {
+            bn::string<MAX_TIMER_CHARS> timer_string = timer_text + bn::to_string<MAX_TIMER_CHARS>(BOOST_TIME - elapsed_seconds);
+            text_generator.generate(TIMER_X, TIMER_Y, timer_string, timer_sprites);
+        }
 
         // Update RNG seed every frame so we don't get the same sequence of positions every time
         rng.update();

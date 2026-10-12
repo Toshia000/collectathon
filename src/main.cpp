@@ -18,7 +18,7 @@
 #include "common_fixed_8x16_font.h"
 #include <bn_sprite_palette_ptr.h>
 
-// Pixels / Frame player moves at
+// Pixels / Frame smiley moves at
 static constexpr bn::fixed SPEED = 1.5;
 
 // Amount of speed boost on top of base speed
@@ -30,7 +30,7 @@ static constexpr int BOOST_COUNT = 3;
 // Duration for the boost
 static constexpr int BOOST_TIME = 3;
 
-// Width and height of the the player and treasure bounding boxes
+// Width and height of the the smiley and treasure bounding boxes
 static constexpr bn::size PLAYER_SIZE = {8, 8};
 static constexpr bn::size TREASURE_SIZE = {8, 8};
 
@@ -61,7 +61,7 @@ static constexpr int BOOST_Y = -70;
 static constexpr int TIMER_X = -20;
 static constexpr int TIMER_Y = -70;
 
-// Initial player location
+// Initial smiley location
 static constexpr int INITIAL_PLAYER_X = 0;
 static constexpr int INITIAL_PLAYER_Y = 0;
 
@@ -69,7 +69,7 @@ static constexpr int INITIAL_PLAYER_Y = 0;
 static constexpr int INITIAL_TREASURE_X = 100;
 static constexpr int INITIAL_TREASURE_Y = 0;
 
-// Change player color every 30 frames
+// Change smiley color every 30 frames
 static constexpr int COLOR_CHANGE_FRAMES = 30;
 
 int main()
@@ -78,8 +78,6 @@ int main()
     bn::random rng = bn::random();
 
     bn::backdrop::set_color(bn::color(0, 0, 31));
-
-    bn::sprite_ptr smiley = bn::sprite_items::smiley.create_sprite();
 
     // Will hold the sprites for the score
     bn::vector<bn::sprite_ptr, MAX_SCORE_CHARS> score_sprites = {};
@@ -107,12 +105,13 @@ int main()
 
     int color_timer = 0;
     int current_color = 0;
-
-    bn::sprite_ptr player = bn::sprite_items::square.create_sprite(INITIAL_PLAYER_X, INITIAL_PLAYER_Y);
+    
+    // Player and treasure sprites
+    bn::sprite_ptr smiley = bn::sprite_items::smiley.create_sprite(INITIAL_PLAYER_X, INITIAL_PLAYER_Y);
     bn::sprite_ptr treasure = bn::sprite_items::dot.create_sprite(INITIAL_TREASURE_X, INITIAL_TREASURE_Y);
 
-    bn::sprite_palette_ptr player_palette = player.palette(); // For alternating colors
-    player_palette.set_color(9, bn::color(0, 31, 0));         // Player will start green
+    bn::sprite_palette_ptr player_palette = smiley.palette(); // For alternating colors
+    player_palette.set_color(9, bn::color(0, 31, 0));         // smiley will start green
 
     while (true)
     {
@@ -148,7 +147,7 @@ int main()
 
         if (bn::keypad::start_pressed())
         {
-            player.set_position(INITIAL_PLAYER_X, INITIAL_PLAYER_Y);
+            smiley.set_position(INITIAL_PLAYER_X, INITIAL_PLAYER_Y);
             treasure.set_position(INITIAL_TREASURE_X, INITIAL_TREASURE_Y);
             score = 0;
             boosts_left = BOOST_COUNT;
@@ -174,45 +173,45 @@ int main()
             elapsed_seconds = 0;
         }
 
-        // Move player with d-pad
+        // Move smiley with d-pad
         if (bn::keypad::left_held())
         {
-            player.set_x(player.x() - SPEED - speed_boost);
+            smiley.set_x(smiley.x() - SPEED - speed_boost);
         }
         if (bn::keypad::right_held())
         {
-            player.set_x(player.x() + SPEED + speed_boost);
+            smiley.set_x(smiley.x() + SPEED + speed_boost);
         }
         if (bn::keypad::up_held())
         {
-            player.set_y(player.y() - SPEED - speed_boost);
+            smiley.set_y(smiley.y() - SPEED - speed_boost);
         }
         if (bn::keypad::down_held())
         {
-            player.set_y(player.y() + SPEED + speed_boost);
+            smiley.set_y(smiley.y() + SPEED + speed_boost);
         }
 
-        // Move player to opposite side of the screen when the player is out of bounds
-        if (player.x() > MAX_X)
+        // Move smiley to opposite side of the screen when the smiley is out of bounds
+        if (smiley.x() > MAX_X)
         {
-            player.set_x(MIN_X);
+            smiley.set_x(MIN_X);
         }
-        if (player.x() < MIN_X)
+        if (smiley.x() < MIN_X)
         {
-            player.set_x(MAX_X);
+            smiley.set_x(MAX_X);
         }
-        if (player.y() > MAX_Y)
+        if (smiley.y() > MAX_Y)
         {
-            player.set_y(MIN_Y);
+            smiley.set_y(MIN_Y);
         }
-        if (player.y() < MIN_Y)
+        if (smiley.y() < MIN_Y)
         {
-            player.set_y(MAX_Y);
+            smiley.set_y(MAX_Y);
         }
 
-        // The bounding boxes of the player and treasure, snapped to integer pixels
-        bn::rect player_rect = bn::rect(player.x().round_integer(),
-                                        player.y().round_integer(),
+        // The bounding boxes of the smiley and treasure, snapped to integer pixels
+        bn::rect player_rect = bn::rect(smiley.x().round_integer(),
+                                        smiley.y().round_integer(),
                                         PLAYER_SIZE.width(),
                                         PLAYER_SIZE.height());
         bn::rect treasure_rect = bn::rect(treasure.x().round_integer(),

@@ -12,6 +12,7 @@
 #include <bn_timer.h>
 #include <bn_timers.h>
 
+#include "bn_sprite_items_smiley.h"
 #include "bn_sprite_items_dot.h"
 #include "bn_sprite_items_square.h"
 #include "common_fixed_8x16_font.h"
@@ -77,6 +78,8 @@ int main()
     bn::random rng = bn::random();
 
     bn::backdrop::set_color(bn::color(0, 0, 31));
+
+    bn::sprite_ptr smiley = bn::sprite_items::smiley.create_sprite();
 
     // Will hold the sprites for the score
     bn::vector<bn::sprite_ptr, MAX_SCORE_CHARS> score_sprites = {};

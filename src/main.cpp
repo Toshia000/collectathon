@@ -13,8 +13,6 @@
 #include <bn_timers.h>
 
 #include "bn_sprite_items_smiley.h"
-#include "bn_sprite_items_dot.h"
-#include "bn_sprite_items_square.h"
 #include "bn_sprite_items_watermelon_8x8.h"
 #include "common_fixed_8x16_font.h"
 #include <bn_sprite_palette_ptr.h>

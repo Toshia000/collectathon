@@ -15,6 +15,7 @@
 #include "bn_sprite_items_smiley.h"
 #include "bn_sprite_items_dot.h"
 #include "bn_sprite_items_square.h"
+#include "bn_sprite_items_watermelon_8x8.h"
 #include "common_fixed_8x16_font.h"
 #include <bn_sprite_palette_ptr.h>
 
@@ -105,10 +106,10 @@ int main()
 
     int color_timer = 0;
     int current_color = 0;
-    
+
     // Player and treasure sprites
     bn::sprite_ptr smiley = bn::sprite_items::smiley.create_sprite(INITIAL_PLAYER_X, INITIAL_PLAYER_Y);
-    bn::sprite_ptr treasure = bn::sprite_items::dot.create_sprite(INITIAL_TREASURE_X, INITIAL_TREASURE_Y);
+    bn::sprite_ptr treasure = bn::sprite_items::watermelon_8x8.create_sprite(INITIAL_TREASURE_X, INITIAL_TREASURE_Y);
 
     bn::sprite_palette_ptr player_palette = smiley.palette(); // For alternating colors
     player_palette.set_color(9, bn::color(0, 31, 0));         // smiley will start green
